@@ -44,10 +44,12 @@ function getMessage() {
 // render each message on HTML
 function renderMessages(msg, container) {
     const messageElement = document.createElement("message");
-    messageElement.innerHTML = `
-    <author>${msg["name"]}</author>
-    <content>${msg["body"]}</content>
-    `
+    const authorElement = document.createElement("author")
+    const contentElement = document.createElement("content")
+    contentElement.textContent = msg["body"]
+    authorElement.textContent = msg["name"]
+    messageElement.appendChild(contentElement)
+    messageElement.appendChild(authorElement)
     container.appendChild(messageElement);
 }
 
