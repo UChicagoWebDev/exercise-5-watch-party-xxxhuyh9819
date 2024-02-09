@@ -185,32 +185,30 @@ def room(room_id):
 
 
 # -------------------------------- API ROUTES ----------------------------------
-
-# POST to change the user's name
-# @app.route('/api/user/name', methods=['POST'])
-# def update_username():
-#     user = get_user_from_cookie(request)
-#     if user is None:
-#         return {}, 403
-#     user_id = request.cookies.get('user_id')
-#     new_name = request.cookies.get('name')
-#     query = "update users set name = ? where id = ?"
-#     query_db(query, [new_name, user_id])
-#     return {}, 200
-
 @app.route('/api/user/name', methods=['POST'])
 def update_username():
-    print("update username")
     user = get_user_from_cookie(request)
     if user is None:
         return {}, 403
     user_id = user['id']
     new_name = request.json.get('name')
-    query_db('update users set name = ? where id = ?', [new_name, user_id])
+    query = 'update users set name = ? where id = ?'
+    query_db(query, [new_name, user_id])
     return {}, 200
 
 
 # POST to change the user's password
+@app.route('/api/user/password', methods=['POST'])
+def update_password():
+    user = get_user_from_cookie(request)
+    if user is None:
+        return {}, 403
+    user_id = user['id']
+    new_password = request.json.get('password')
+    query = 'update users set password = ? where id = ?'
+    query_db(query, [new_password, user_id])
+    return {}, 200
+
 
 # POST to change the name of a room
 

@@ -75,3 +75,22 @@ function updateUserName() {
         })
     .catch(error => console.error(`Error: ${error}`));
 }
+
+// update password
+function updatePassword() {
+    const password = document.getElementById("pwd_input").value
+    const url = '/api/user/password'
+    fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": WATCH_PARTY_API_KEY
+        },
+        body: JSON.stringify({password: password})
+    })
+    .then(response => response.json())
+        .then(() => {
+            alert('Password updated successfully');
+        })
+    .catch(error => console.error(`Error: ${error}`));
+}
