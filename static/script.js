@@ -15,10 +15,39 @@ function postMessage() {
   return;
 }
 
-function getMessages() {
-  return;
+// GET to get all messages in a room
+function getMessage() {
+    const inviteLink = document.querySelector(".invite")
+    // src: https://stackoverflow.com/questions/10539299/getting-link-text-within-a-div
+    const text = inviteLink
+                   .getElementsByTagName('a')[0].innerHTML
+    const room_id = Number(text.slice(text.length - 1))
+    const url = `/api/rooms/${room_id}/messages`
+    fetch(url, {
+        method: "GET",
+        headers: { "Authorization": WATCH_PARTY_API_KEY }
+    }).then(response => response.json())
+        .then(data => {
+            const container = document.querySelector(".messages");
+            container.innerHTML = "";
+            data.forEach(msg => {
+              renderMessages(msg, container)
+            });
+        })
+        .catch(error => console.log(`Error: ${error}`))
+
+}
+
+// render each message on HTML
+function renderMessages(msg, container) {
+    const messageElement = document.createElement("message");
+    messageElement.innerHTML = `
+    <author>${msg["name"]}</author>
+    <content>${msg["body"]}</content>
+    `
+    container.appendChild(messageElement);
 }
 
 function startMessagePolling() {
-  return;
+    setTimeout(getMessage, 200)
 }
