@@ -53,8 +53,9 @@ function renderMessages(msg, container) {
     container.appendChild(messageElement);
 }
 
+// check the messages endpoint every 100 ms and add any new messages to the chat history
 function startMessagePolling() {
-    setTimeout(getMessage, 200)
+    setTimeout(getMessage, 100)
 }
 
 // update username
