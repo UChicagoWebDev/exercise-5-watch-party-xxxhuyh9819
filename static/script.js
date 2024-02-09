@@ -25,7 +25,10 @@ function getMessage() {
     const url = `/api/rooms/${room_id}/messages`
     fetch(url, {
         method: "GET",
-        headers: { "Authorization": WATCH_PARTY_API_KEY }
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": WATCH_PARTY_API_KEY
+        }
     }).then(response => response.json())
         .then(data => {
             const container = document.querySelector(".messages");
@@ -50,4 +53,23 @@ function renderMessages(msg, container) {
 
 function startMessagePolling() {
     setTimeout(getMessage, 200)
+}
+
+// update username
+function updateUserName() {
+    const name = document.getElementById("name_input").value
+    const url = '/api/user/name'
+    fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": WATCH_PARTY_API_KEY
+        },
+        body: JSON.stringify({name: name})
+    })
+    .then(response => response.json())
+        .then(() => {
+            alert('Username updated successfully');
+        })
+    .catch(error => console.error(`Error: ${error}`));
 }
