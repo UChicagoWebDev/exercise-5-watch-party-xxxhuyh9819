@@ -12,7 +12,27 @@ function createChat() {
 // POST to the API when the user posts a new message.
 // Automatically poll for new messages on a regular interval.
 function postMessage() {
-  return;
+    const inviteLink = document.querySelector(".invite")
+    const text = inviteLink
+                   .getElementsByTagName('a')[0].innerHTML
+    const room_id = Number(text.slice(text.length - 1))
+    const contents = document.getElementById("text_area").value
+    const url = `/api/rooms/${room_id}/messages`
+    fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": WATCH_PARTY_API_KEY
+        },
+        body: JSON.stringify({body: contents, user_id: WATCH_PARTY_USER_ID})
+    })
+    .then(response => response.json())
+        .then(() => {
+            getMessage()
+            document.getElementById("text_area").value = ''
+            alert('Post uploaded successfully');
+        })
+    .catch(error => console.error(`Error: ${error}`));
 }
 
 // GET to get all messages in a room
