@@ -211,9 +211,19 @@ def update_password():
 
 
 # POST to change the name of a room
+@app.route('/api/rooms/<int:room_id>', methods=['POST'])
+def update_room_name(room_id):
+    user = get_user_from_cookie(request)
+    if user is None:
+        return {}, 403
+    name = request.json.get('name')
+    query = "update rooms set name = ? where id = ?"
+    query_db(query, [name, room_id])
+    return {}, 200
+
 
 # GET to get all the messages in a room
-@app.route('/api/rooms/<room_id>/messages', methods=['GET'])
+@app.route('/api/rooms/<int:room_id>/messages', methods=['GET'])
 def get_all_messages(room_id):
     user = get_user_from_cookie(request)
     if user is None:

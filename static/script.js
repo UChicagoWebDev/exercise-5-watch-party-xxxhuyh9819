@@ -94,3 +94,35 @@ function updatePassword() {
         })
     .catch(error => console.error(`Error: ${error}`));
 }
+
+// update room name
+function updateRoomName() {
+    const inviteLink = document.querySelector(".invite")
+    // src: https://stackoverflow.com/questions/10539299/getting-link-text-within-a-div
+    const text = inviteLink
+                   .getElementsByTagName('a')[0].innerHTML
+    const room_id = Number(text.slice(text.length - 1))
+    const room_name = document.getElementById("room_name_input").value
+    const url = `/api/rooms/${room_id}`
+    fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": WATCH_PARTY_API_KEY
+        },
+        body: JSON.stringify({name: room_name})
+    })
+    .then(response => response.json())
+        .then(() => {
+            document.getElementById("room_name_span").value = room_name
+            document.querySelector(".roomData .edit").classList.add("hide");
+            document.querySelector(".roomData .display").classList.remove("hide");
+            alert('Room name updated successfully');
+        })
+    .catch(error => console.error(`Error: ${error}`));
+}
+
+function toggleHide() {
+  document.querySelector(".roomData .edit").classList.remove("hide");
+  document.querySelector(".roomData .display").classList.add("hide");
+}
